@@ -1,21 +1,24 @@
+
 import random
 
 words = ['able', 'about', 'account', 'acid', 'across', 'act', 'addition', 'adjustment', 'advertisement', 'after', 'again', 'against', 'agreement', 'air', 'all', 'among', 'amount', 'amusement', 'and', 'angle', 'angry', 'animal', 'answer', 'ant', 'any', 'apparatus', 'apple', 'approval', 'arch', 'argument', 'arm', 'army', 'art', 'attack', 'attempt', 'attention', 'attraction', 'authority', 'automatic', 'baby', 'back', 'bad', 'bag', 'balance', 'ball', 'band']
+lifes_amount = 6
 
 def main():
     word = random.choice(words)
     word_letters = word_convertation(word)
     word_letters_final = word_convertation(word)
     underscore_word = underscore_convertation(word)
-    lifes_amount = 6
     print('Welcome to hangman game!')
     print(word)
     print(underscore_word)
     while lifes_amount > 0:
         player_letter = input('Please input your letter')
-        underscore_word = check_letter(player_letter, word_letters, underscore_word, lifes_amount)
+        underscore_word = check_letter(player_letter, word_letters, underscore_word)
         print(underscore_word)
-        check_lifes(lifes_amount)
+        is_lost = check_lifes(lifes_amount)
+        if(is_lost):
+            return
         if word_letters_final == underscore_word:
             good_ending()
             break
@@ -37,11 +40,14 @@ def underscore_convertation(word):
 
 def check_lifes(lifes_amount):
     print(f'You have {lifes_amount} lifes')
-    if lifes_amount < 0:
+    if lifes_amount < 1:
         bad_ending()
+        return True
+    return False
 
 
-def check_letter(player_letter, word_letters, underscore_word, lifes_amount):
+def check_letter(player_letter, word_letters, underscore_word):
+    global lifes_amount
     if player_letter in word_letters:
         for i in range(word_letters.count(player_letter)):
             underscore_word[word_letters.index(player_letter)] = player_letter
